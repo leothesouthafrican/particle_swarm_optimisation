@@ -87,7 +87,7 @@ def visualize_pso(objective_function, bounds, num_particles=30, max_iter=100, in
         ax.legend()
         return scat, global_best_marker, global_optimum_marker
 
-    ani = animation.FuncAnimation(fig, update, frames=max_iter, blit=True, repeat=False)
+    ani = animation.FuncAnimation(fig, update, frames=max_iter, blit=True, repeat=False, interval=50)  # Adjust the interval to increase the frame rate
     plt.show()
 
     # Close the log file after the plot is closed
