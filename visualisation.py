@@ -6,15 +6,15 @@ import numpy as np
 import csv
 from pso import initialize_particles
 
-# Known global optimum for the inverted Rastrigin function in 2D
+# Known global optimum for the Rastrigin function in 2D (if inverted, adjust accordingly)
 GLOBAL_OPTIMUM_X = 0
 GLOBAL_OPTIMUM_Y = 0
-GLOBAL_OPTIMUM_SCORE = 60
+GLOBAL_OPTIMUM_SCORE = 0  # This will change if we are using inverted_rastrigin_function
 
-def visualize_pso(objective_function, bounds, num_particles=30, max_iter=100, inertia=0.5, cognitive=0.8, social=0.9, patience=10):
+def visualize_pso(objective_function, bounds, num_particles=30, max_iter=100, inertia=0.5, cognitive=0.8, social=0.9, patience=10, optimize_for="max"):
     particles = initialize_particles(num_particles, bounds)
     global_best_position = np.random.uniform(low=bounds[:, 0], high=bounds[:, 1])
-    global_best_score = -float('inf')  # Since we are maximizing
+    global_best_score = -float('inf') if optimize_for == "max" else float('inf')
 
     # Open the log file at the beginning
     log_file = open("pso_log.csv", "w", newline="")
@@ -44,10 +44,10 @@ def visualize_pso(objective_function, bounds, num_particles=30, max_iter=100, in
 
         for idx, particle in enumerate(particles):
             score = objective_function(particle.position)
-            if score > particle.best_score:  # Note the inversion here
+            if (optimize_for == "max" and score > particle.best_score) or (optimize_for == "min" and score < particle.best_score):
                 particle.best_score = score
                 particle.best_position = particle.position.copy()  # Ensure it's a copy of the position
-            if score > global_best_score:  # Note the inversion here
+            if (optimize_for == "max" and score > global_best_score) or (optimize_for == "min" and score < global_best_score):
                 global_best_score = score
                 global_best_position = particle.position.copy()  # Ensure it's a copy of the position
                 improvement = True
