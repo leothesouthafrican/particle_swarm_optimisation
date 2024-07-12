@@ -1,7 +1,7 @@
 # main.py
 
-from objective_function import rastrigin_function, inverted_rastrigin_function
-from visualisation import visualize_pso
+from src.objective_function import inverted_rastrigin_function
+from src.visualisation import visualize_pso
 import numpy as np
 
 def get_user_input():
@@ -61,7 +61,7 @@ def main():
     bounds, num_particles, max_iter, inertia, cognitive, social, patience, optimize_for = get_user_input()
 
     # Select the appropriate objective function
-    objective_function = rastrigin_function if optimize_for == "min" else inverted_rastrigin_function
+    objective_function = inverted_rastrigin_function if optimize_for == "max" else rastrigin_function
 
     # Run PSO with visualization
     best_position, best_score = visualize_pso(

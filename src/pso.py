@@ -1,6 +1,6 @@
-# pso.py
+# src/pso.py
 
-from particle import initialize_particles
+from src.particle import initialize_particles
 import numpy as np
 
 def pso(objective_function, bounds, num_particles=30, max_iter=100, inertia=0.5, cognitive=0.8, social=0.9, optimize_for="max"):

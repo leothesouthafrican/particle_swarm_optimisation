@@ -1,10 +1,10 @@
-# visualisation.py
+# src/visualisation.py
 
 import matplotlib.pyplot as plt
 from matplotlib import animation
 import numpy as np
 import csv
-from pso import initialize_particles
+from src.pso import initialize_particles
 
 # Known global optimum for the Rastrigin function in 2D (if inverted, adjust accordingly)
 GLOBAL_OPTIMUM_X = 0
