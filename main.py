@@ -58,30 +58,24 @@ def get_user_input():
     return bounds, num_particles, max_iter, inertia, cognitive, social, patience, optimize_for
 
 def main():
-    while True:
-        try:
-            bounds, num_particles, max_iter, inertia, cognitive, social, patience, optimize_for = get_user_input()
+    try:
+        bounds, num_particles, max_iter, inertia, cognitive, social, patience, optimize_for = get_user_input()
 
-            # Select the appropriate objective function
-            objective_function = inverted_rastrigin_function if optimize_for == "max" else rastrigin_function
+        # Select the appropriate objective function
+        objective_function = inverted_rastrigin_function if optimize_for == "max" else rastrigin_function
 
-            # Run PSO with visualization
-            best_position, best_score, terminated_early = visualize_pso(
-                objective_function, bounds, num_particles, max_iter, inertia, cognitive, social, patience, optimize_for
-            )
+        # Run PSO with visualization
+        best_position, best_score, terminated_early = visualize_pso(
+            objective_function, bounds, num_particles, max_iter, inertia, cognitive, social, patience, optimize_for
+        )
 
-            print("Best Position:", best_position)
-            print("Best Score:", best_score)
+        print("Best Position:", best_position)
+        print("Best Score:", best_score)
 
-            if terminated_early:
-                print(f"Terminated early due to no improvement for {patience} iterations.")
-        except KeyboardInterrupt:
-            print("\nOptimization interrupted by user.")
-        
-        # Ask the user if they want to run the optimization again
-        rerun = input("Do you want to run the optimization again? (yes/no): ").strip().lower()
-        if rerun != "yes":
-            break
+        if terminated_early:
+            print(f"Terminated early due to no improvement for {patience} iterations.")
+    except KeyboardInterrupt:
+        print("\nOptimization interrupted by user.")
 
 if __name__ == "__main__":
     main()

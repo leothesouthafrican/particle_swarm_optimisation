@@ -1,3 +1,5 @@
+# src/visualisation.py
+
 import matplotlib.pyplot as plt
 from matplotlib import animation
 import numpy as np
@@ -5,15 +7,19 @@ import csv
 from tqdm import tqdm
 from src.pso import initialize_particles
 
-# Known global optimum for the Rastrigin function in 2D (if inverted, adjust accordingly)
+# Define global optimum based on the type of optimization
 GLOBAL_OPTIMUM_X = 0
 GLOBAL_OPTIMUM_Y = 0
-GLOBAL_OPTIMUM_SCORE = 0  # This will change if we are using inverted_rastrigin_function
+GLOBAL_OPTIMUM_MAX = 60
+GLOBAL_OPTIMUM_MIN = 0
 
 def visualize_pso(objective_function, bounds, num_particles=30, max_iter=100, inertia=0.5, cognitive=0.8, social=0.9, patience=10, optimize_for="max"):
     particles = initialize_particles(num_particles, bounds)
     global_best_position = np.random.uniform(low=bounds[:, 0], high=bounds[:, 1])
     global_best_score = -float('inf') if optimize_for == "max" else float('inf')
+
+    # Set global optimum based on optimization type
+    global_optimum_score = GLOBAL_OPTIMUM_MAX if optimize_for == "max" else GLOBAL_OPTIMUM_MIN
 
     # Open the log file at the beginning
     log_file = open("pso_log.csv", "w", newline="")
@@ -65,7 +71,7 @@ def visualize_pso(objective_function, bounds, num_particles=30, max_iter=100, in
             # Log particle data
             log_writer.writerow([frame + 1, idx, particle.position[0], particle.position[1], score,
                                  global_best_position[0], global_best_position[1], global_best_score,
-                                 GLOBAL_OPTIMUM_X, GLOBAL_OPTIMUM_Y, GLOBAL_OPTIMUM_SCORE])
+                                 GLOBAL_OPTIMUM_X, GLOBAL_OPTIMUM_Y, global_optimum_score])
         
         if improvement:
             no_improvement_counter = 0
