@@ -1,5 +1,3 @@
-# src/visualisation.py
-
 import matplotlib.pyplot as plt
 from matplotlib import animation
 import numpy as np
@@ -38,12 +36,13 @@ def visualize_pso(objective_function, bounds, num_particles=30, max_iter=100, in
     colorbar.set_label('Objective Function Value')
 
     no_improvement_counter = 0
+    terminated_early = False
 
     # Create a tqdm progress bar
     progress_bar = tqdm(total=max_iter, desc="Optimizing", dynamic_ncols=True)
 
     def update(frame):
-        nonlocal global_best_position, global_best_score, no_improvement_counter
+        nonlocal global_best_position, global_best_score, no_improvement_counter, terminated_early
         improvement = False
 
         for idx, particle in enumerate(particles):
@@ -75,7 +74,7 @@ def visualize_pso(objective_function, bounds, num_particles=30, max_iter=100, in
 
         # Early termination if no improvement
         if no_improvement_counter >= patience:
-            print(f"No improvement for {patience} iterations. Terminating early at iteration {frame + 1}.")
+            terminated_early = True
             ani.event_source.stop()  # Stop the animation
 
         # Update the scatter plot with the new positions
@@ -99,4 +98,4 @@ def visualize_pso(objective_function, bounds, num_particles=30, max_iter=100, in
     # Close the progress bar
     progress_bar.close()
 
-    return global_best_position, global_best_score
+    return global_best_position, global_best_score, terminated_early
