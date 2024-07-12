@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib import animation
 import numpy as np
 import csv
+from tqdm import tqdm
 from src.pso import initialize_particles
 
 # Known global optimum for the Rastrigin function in 2D (if inverted, adjust accordingly)
@@ -37,6 +38,9 @@ def visualize_pso(objective_function, bounds, num_particles=30, max_iter=100, in
     colorbar.set_label('Objective Function Value')
 
     no_improvement_counter = 0
+
+    # Create a tqdm progress bar
+    progress_bar = tqdm(total=max_iter, desc="Optimizing", dynamic_ncols=True)
 
     def update(frame):
         nonlocal global_best_position, global_best_score, no_improvement_counter
@@ -79,10 +83,9 @@ def visualize_pso(objective_function, bounds, num_particles=30, max_iter=100, in
         # Update the global best marker
         global_best_marker.set_data([global_best_position[0]], [global_best_position[1]])
         
-        # Print telemetry data
-        print(f"Iteration {frame + 1}/{max_iter}")
-        print(f"Global Best Score: {global_best_score}")
-        print(f"Global Best Position: {global_best_position}\n")
+        # Update the tqdm progress bar
+        progress_bar.set_postfix({"Global Best Score": f"{global_best_score:.4f}"})
+        progress_bar.update(1)
         
         ax.legend()
         return scat, global_best_marker, global_optimum_marker
@@ -92,5 +95,8 @@ def visualize_pso(objective_function, bounds, num_particles=30, max_iter=100, in
 
     # Close the log file after the plot is closed
     log_file.close()
+
+    # Close the progress bar
+    progress_bar.close()
 
     return global_best_position, global_best_score
