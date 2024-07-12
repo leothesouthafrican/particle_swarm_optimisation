@@ -13,7 +13,7 @@ GLOBAL_OPTIMUM_Y = 0
 GLOBAL_OPTIMUM_MAX = 60
 GLOBAL_OPTIMUM_MIN = 0
 
-def visualize_pso(objective_function, bounds, num_particles=30, max_iter=100, inertia=0.5, cognitive=0.8, social=0.9, patience=10, optimize_for="max"):
+def visualize_pso(objective_function, bounds, num_particles=30, max_iter=100, inertia=0.5, cognitive=0.8, social=0.9, patience=10, optimize_for="max", frame_rate=50, log_filename="pso_log.csv"):
     particles = initialize_particles(num_particles, bounds)
     global_best_position = np.random.uniform(low=bounds[:, 0], high=bounds[:, 1])
     global_best_score = -float('inf') if optimize_for == "max" else float('inf')
@@ -22,7 +22,7 @@ def visualize_pso(objective_function, bounds, num_particles=30, max_iter=100, in
     global_optimum_score = GLOBAL_OPTIMUM_MAX if optimize_for == "max" else GLOBAL_OPTIMUM_MIN
 
     # Open the log file at the beginning
-    log_file = open("pso_log.csv", "w", newline="")
+    log_file = open(log_filename, "w", newline="")
     log_writer = csv.writer(log_file)
     log_writer.writerow(["Iteration", "Particle", "Position X", "Position Y", "Score", "Global Best X", "Global Best Y", "Global Best Score", "Global Optimum X", "Global Optimum Y", "Global Optimum Score"])
 
@@ -95,7 +95,7 @@ def visualize_pso(objective_function, bounds, num_particles=30, max_iter=100, in
         ax.legend()
         return scat, global_best_marker, global_optimum_marker
 
-    ani = animation.FuncAnimation(fig, update, frames=max_iter, blit=True, repeat=False, interval=50)  # Adjust the interval to increase the frame rate
+    ani = animation.FuncAnimation(fig, update, frames=max_iter, blit=True, repeat=False, interval=frame_rate)  # Adjust the interval to set the frame rate
     plt.show()
 
     # Close the log file after the plot is closed
